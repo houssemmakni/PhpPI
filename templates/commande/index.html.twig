@@ -1,0 +1,136 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Commande Index{% endblock %}
+
+{% block body %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Commande Index</h1>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+    </a>
+</div>
+<div id="table-actions" class="mb-4">
+    
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search by Commande ID..." class="form-control" id="search-input">
+</div>
+<div class="table-responsive" id="table-container">
+    <table class="table table-bordered" id="table">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">ID Commande</th>
+                <th onclick="sortTable(1)">Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Address</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>email</th>
+                <th>Total price</th>
+                <th>Date Commande</th> <!-- Add this line for the new column -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.idarticle }}</td>
+                    <td>{{ commande.nomarticle }}</td>
+                    <td>{{ commande.nombre }}</td>
+                    <td>{{ commande.addresseCommande }}</td>
+                    <td>{{ commande.nomPrenomCommande }}</td>
+                    <td>{{ commande.telCommande }}</td>
+                    <td>{{ commande.email }}</td>
+                    <td>{{ commande.totalPrice }}</td>
+                    <td>{{ commande.dateCommande|date('Y-m-d H:i:s') }}</td> <!-- Format the date as per your requirement -->
+                    <td>
+                        {{ include('commande/_delete_form.html.twig', {'id': commande.id}) }}
+                        <a href="{{ path('confirm_and_send_pdf', {'id': commande.id}) }}" class="btn btn-sm btn-success">Confirm and Send PDF</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 1; i < tr.length; i++) { // Start from index 1 to skip the table header
+            td = tr[i].getElementsByTagName("td")[0]; // Change to the appropriate column index for ID Commande
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+   
+
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("table");
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+
+            for (i = 1; i < rows.length - 1; i++) { // Start from index 1 to skip the table header
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    function confirmAndSendPdf(commandeId) {
+
+        
+        // You may want to show a confirmation dialog here
+
+        // Redirect to the confirm_and_send_pdf route with the commandeId
+        window.location.href = "{{ path('confirm_and_send_pdf', {'id': '__commande_id__'}) }}".replace('__commande_id__', commandeId);
+    }
+</script>
+{% endblock %}

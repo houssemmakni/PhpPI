@@ -1,0 +1,229 @@
+{% extends 'base-back.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Additional styles specific to this template */
+        #table-container {
+            margin-top: 20px;
+        }
+
+        #table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #table th,
+        #table td {
+            border: 1px solid #ffffff;
+            padding: 12px;
+            text-align: left;
+        }
+
+        #table th {
+            background-color: #f2f2f2;
+        }
+
+        #table-actions {
+            margin-top: 20px;
+        }
+
+        #search-input {
+            margin-right: 10px;
+        }
+
+        .export-pdf-btn {
+            background-color: #4e73df; /* Blue color */
+            color: white;
+            padding: 10px 15px; /* Add some padding */
+            font-size: 14px; /* Increase font size */
+            border: none; /* Remove borders */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer/hand icon */
+            margin-right: 10px; /* Margin between buttons */
+        }
+
+        #page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4e73df; /* Blue color for title */
+        }
+
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-icon i {
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Article Index{% endblock %}
+
+
+
+{% block body %}
+    <div id="page-title">
+        <i class="fas fa-list"></i> Article Index
+    </div>
+
+    <div id="table-actions" class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex">
+            <button id="btPrint" onclick="createPDF()" class="export-pdf-btn">
+                <i class="fas fa-file-pdf"></i> Export PDF
+            </button>
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search ..." class="form-control"
+                id="search-input">
+        </div>
+        <div>
+            <a href="{{ path('app_article_new') }}" class="btn btn-success" id="create-new-btn">
+                <i class="fas fa-plus"></i> Create New
+            </a>
+        </div>
+    </div>
+
+    <div id="table-container">
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th onclick="sortTable(2)">Titre_article</th>
+                    <th>Image</th>
+                    <th>Description_article</th>
+                    <th>Prix</th>
+                    <th>QR Code</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.id }}</td>
+                        <td>{{ article.titreArticle }}</td>
+                        <td>
+                            {% if article.image %}
+                                <img src="{{ asset('uploads/article_images/' ~ article.image) }}" width="150"
+                                    height="167" alt="Article Image">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                        <td>{{ article.descriptionArticle }}</td>
+                        <td>{{ article.prix }}</td>
+                        <td>
+                            <img src="{{ article.qrCode }}" width="123" height="100" />
+                        </td>
+                        <td>
+                            <a href="{{ path('app_article_show', {'id': article.id}) }}"
+                                class="btn btn-info btn-sm btn-icon">
+                                <i class="fas fa-eye"></i> Show
+                            </a>
+                            <a href="{{ path('app_article_edit', {'id': article.id}) }}"
+                                class="btn btn-warning btn-sm btn-icon">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            {{ include('article/_delete_form.html.twig', {'id': article.id}) }}
+                            
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+      function createPDF() {
+        var sTable = document.getElementById('table').outerHTML;
+        var style = "<style>";
+        style = style + "table {width: 100%; border-collapse: collapse; margin-top: 20px;}";
+        style = style + "th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}";
+        style = style + "th {background-color: #f2f2f2;}";
+        style = style + "</style>";
+    
+        // CREATE A WINDOW OBJECT.
+        var win = window.open('', '', 'height=700,width=700');
+        win.document.write('<html><head>');
+        win.document.write('<title>product list PDF</title>');   // <title> FOR PDF HEADER.
+        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+        win.document.write('</body></html>');
+        win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+        win.print();    // PRINT THE CONTENTS.
+    }
+    </script>
+    <script>
+        function myFunction() {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("table");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("table");
+          switching = true;
+          dir = "asc";
+
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+
+            for (i = 1; i < (rows.length - 1); i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+            }
+
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              switchcount++;
+            } else {
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+        }
+    </script>
+{% endblock %}

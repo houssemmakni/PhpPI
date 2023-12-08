@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Success{% endblock %}
+{% block header %}
+<section class="home-slider owl-carousel">
+    <div class="slider-item" style="background-image: url({{ asset('front/img/slider-1.jpg') }}";>
+      
+      <div class="container">
+        <div class="row slider-text align-items-center justify-content-center">
+        
+        </div>
+      </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block body %}
+
+<body>
+  <h1 style="background-color: #000000; color: #ffffff; text-align: center;">Félicitation Votre paiement a été effectué avec succès !</h1>
+  <h1 style="font-size: 2em; font-weight: bold; text-align: center;">donner votre email pour que vous recevoir un email de confimation merci</h1>
+  <form action="/votre-page-de-validation" method="post" style="border: 1px solid #000000; margin: 0 auto; max-width: 600px;">
+    <label for="email" style="font-size: 1em; font-weight: bold;">Email :</label>
+    <input type="email" id="email" name="email" placeholder="Entrez votre adresse email" required style="width: 100%; padding: 10px; border: 1px solid #000000;">
+    <br><br>
+    <input type="submit" value="Valider" style="background-color: #000000; color: #ffffff; font-size: 1.2em; font-weight: bold;">
+  </form>
+</body>
+
+{% endblock %}

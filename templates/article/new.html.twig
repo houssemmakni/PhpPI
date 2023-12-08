@@ -1,0 +1,27 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2>
+                            <i class="fas fa-file-alt"></i> Create New Article
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        {{ include('article/_form.html.twig') }}
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_article_index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,3 +1,37 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\HomeController::index
+app_article_index_client:
+    path: /client/articles
+    controller: App\Controller\ArticleController::indexClient
+
+
+
+app_reclamation_table:
+    path: /table
+    controller: App\Controller\ReclamationController::table
+
+
+app_command_form:
+    path: /command/form/{id}
+    controller: App\Controller\ArticleController::showCommandForm
+
+app_command_process:
+    path: /command/process
+    controller: App\Controller\ArticleController::processCommandForm
+    methods: ['POST']
+
+app_commande_delete_selected_ajax:
+    path: '/commande/delete-selected-ajax'
+    controller: 'App\Controller\YourControllerClass::deleteSelectedAjax'
+    methods: ['POST']
+
+
+confirm_and_send_pdf:
+    path: '/commande/{id}/confirm-and-send-pdf'
+    controller: 'App\Controller\CommandeController::confirmAndSendPdf'
+
+app_shop_stats:
+    path: /shopstats
+    controller: App\Controller\CommandeController::shopStats
+

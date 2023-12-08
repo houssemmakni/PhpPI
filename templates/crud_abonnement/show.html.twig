@@ -1,0 +1,35 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Abonnement
+{% endblock %}
+
+{% block body %}
+	<h1>Abonnement</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ abonnement.id }}</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>{{ abonnement.type }}</td>
+			</tr>
+			<tr>
+				<th>Prix</th>
+				<td>{{ abonnement.prix }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ abonnement.description }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_crud_abonnement_index') }}">back to list</a>
+
+	<a href="{{ path('app_crud_abonnement_edit', {'id': abonnement.id}) }}">edit</a>
+
+	{{ include('crud_abonnement/_delete_form.html.twig') }}
+{% endblock %}

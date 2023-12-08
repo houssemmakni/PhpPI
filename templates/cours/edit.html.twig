@@ -1,0 +1,12 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Edit Cours{% endblock %}
+
+{% block body %}
+<p style=" font-weight: bold; color: #3b3b3b; font-size:30px;">Edit Cours</p>
+
+    {{ include('cours/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+    {{ include('cours/_delete_form.html.twig') }}
+{% endblock %}

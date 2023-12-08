@@ -1,0 +1,43 @@
+{% block title %}Commandes
+{% endblock %}
+
+{% block body %}
+
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8">
+			<title>Liste des abonnements</title>
+		</head>
+		<body>
+			<h1>Liste des abonnements</h1>
+
+			<table border="1">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>type</th>
+						<th>prix</th>
+						<th>description</th>
+
+						<!-- Ajoutez d'autres colonnes selon vos besoins -->
+					</tr>
+				</thead>
+				<tbody>
+					{% for abonnement in abonnements %}
+						<tr>
+							<td>{{ abonnement.id }}</td>
+							<td>{{ abonnement.type }}</td>
+							<td>{{ abonnement.prix }}</td>
+							<td>{{ abonnement.description }}</td>
+
+
+							<!-- Ajoutez d'autres colonnes selon vos besoins -->
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</body>
+	</html>
+
+{% endblock %}

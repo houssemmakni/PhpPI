@@ -1,0 +1,56 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Cours{% endblock %}
+
+{% block stylesheets %}  
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+
+   <p style=" font-weight: bold; color: #3b3b3b; font-size:30px;">Liste Cours</p>
+  
+    <div style="padding-bottom: 20px; padding-left:88%;">
+        <a href="{{ path('app_cours_new') }}" class="btn btn-secondary">Ajouter Cours</a>
+    </div>
+
+    <div class="row" style="box-shadow: 0 2rem 3rem #cdd6db;">
+        <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Duration</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cour in cours %}
+            <tr>
+                <td>{{ cour.id }}</td>
+                <td>{{ cour.title }}</td>
+                <td>{{ cour.description }}</td>
+                <td>{{ cour.duration }}</td>
+                <td>
+                    <a href="{{ path('app_cours_show', {'id': cour.id}) }}">show</a>
+                    <a href="{{ path('app_cours_edit', {'id': cour.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script defer  src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script defer  src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script defer  src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="{{ asset('Back/js/script.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{# templates/pdf/commande_confirmation_pdf.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation and PDF</title>
+</head>
+<body>
+    <h2>Commande Confirmation</h2>
+    
+    <p><strong>ID Commande:</strong> {{ commande.id }}</p>
+    <p><strong>Product Name:</strong> {{ commande.nomarticle }}</p>
+    <p><strong>Quantity:</strong> {{ commande.nombre }}</p>
+    <p><strong>Address:</strong> {{ commande.addresseCommande }}</p>
+    <p><strong>Name:</strong> {{ commande.nomPrenomCommande }}</p>
+    <p><strong>Phone:</strong> {{ commande.telCommande }}</p>
+    <p><strong>Email:</strong> {{ commande.email }}</p>
+    <p><strong>Total Price:</strong> {{ commande.totalPrice }}</p>
+    <p><strong>Date Commande:</strong> {{ commande.dateCommande|date('Y-m-d H:i:s') }}</p>
+
+    <!-- Add any other details you want to include in the PDF -->
+</body>
+</html>

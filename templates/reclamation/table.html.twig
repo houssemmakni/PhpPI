@@ -1,0 +1,120 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Reclamations{% endblock %}
+
+
+
+{% block body %}
+    <div class="container">
+        <h1>Reclamations</h1>
+
+        <!-- Search bar with dropdown for criteria -->
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" placeholder="Enter search term">
+        
+        <label for="searchCriteria">Search Criteria:</label>
+        <select id="searchCriteria">
+            <option value="subject">Subject</option>
+            <option value="description">Description</option> <!-- Added option for "Description" -->
+            <option value="userEmail">User Email</option> <!-- Added option for "User ID" -->
+        </select>
+
+        <!-- Status filter dropdown -->
+        <label for="statusFilter">Filter by Status:</label>
+        <select id="statusFilter">
+            <option value="all">All</option>
+            <option value="onHold">On Hold</option>
+            <option value="waiting">Waiting for Customer's Response</option>
+            <option value="solved">Solved</option>
+        </select>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">userEmail</th>
+                    <th scope="col">Response</th>
+                    <th scope="col">Response Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reclamation in reclamations %}
+                    <tr>
+                        <th scope="row">{{ reclamation.id }}</th>
+                        <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ reclamation.subject }}</td>
+                        <td>{{ reclamation.description }}</td>
+                        <td>{{ reclamation.status }}</td>
+                        <td>{{ reclamation.userEmail }}</td>
+                        <td>{{ reclamation.response ?? '' }}</td>
+                        <td>{{ reclamation.DateReponse ? reclamation.DateReponse|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">Show</a>
+                            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">Respond</a>
+                            <a href="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var input = document.getElementById('searchInput');
+            var criteriaSelect = document.getElementById('searchCriteria');
+            var statusFilter = document.getElementById('statusFilter');
+            var table = document.querySelector('.table tbody');
+
+            input.addEventListener('input', updateSearch);
+            criteriaSelect.addEventListener('change', updateSearch);
+            statusFilter.addEventListener('change', updateSearch);
+
+            function updateSearch() {
+                var searchTerm = input.value.toLowerCase();
+                var selectedCriteria = criteriaSelect.value;
+                var selectedStatus = statusFilter.value;
+
+                Array.from(table.rows).forEach(function (row) {
+                    var rowStatus = row.cells[5].textContent.toLowerCase();
+
+                    if (filterByStatus(rowStatus, selectedStatus) && filterByCriteria(row, selectedCriteria, searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            function filterByStatus(rowStatus, selectedStatus) {
+                return selectedStatus === 'all' || rowStatus === selectedStatus;
+            }
+
+            function filterByCriteria(row, selectedCriteria, searchTerm) {
+                var cellIndex = getCellIndexByCriteria(selectedCriteria);
+                if (cellIndex === null) {
+                    return true; // Criteria not found, display the row
+                }
+
+                var cellValue = row.cells[cellIndex].textContent.toLowerCase();
+                return cellValue.includes(searchTerm);
+            }
+
+            function getCellIndexByCriteria(criteria) {
+               
+                var criteriaToCellIndex = {
+                    'subject': 2,
+                    'description': 3,
+                    'userEmail': 5,
+                };
+
+                return criteriaToCellIndex[criteria] || null;
+            }
+        });
+    </script>
+{% endblock %}

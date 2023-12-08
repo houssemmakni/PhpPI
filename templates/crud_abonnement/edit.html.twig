@@ -1,0 +1,13 @@
+{% extends 'base-back.html.twig' %}
+{% block title %}Edit Abonnement
+{% endblock %}
+
+{% block body %}
+	<h1>Edit Abonnement</h1>
+
+	{{ include('crud_abonnement/_form.html.twig', {'button_label': 'Update'}) }}
+
+	<a href="{{ path('app_crud_abonnement_index') }}">back to list</a>
+
+	{{ include('crud_abonnement/_delete_form.html.twig') }}
+{% endblock %}

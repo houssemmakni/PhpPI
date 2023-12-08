@@ -1,0 +1,36 @@
+{{ form_start(form, {'attr': {'class': 'my-custom-form-class'}}) }}
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        {{ form_label(form.titre_article, 'Title') }}
+        {{ form_widget(form.titre_article, {'attr': {'class': 'form-control mb-3'}}) }}
+    </div>
+
+    <div class="form-group col-md-6">
+        {{ form_label(form.imageFile, 'Image') }}
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                {{ form_widget(form.imageFile, {'attr': {'class': 'custom-file-input'}}) }}
+                <label class="custom-file-label" for="{{ form.imageFile.vars.id }}">
+                    <i class="fas fa-upload"></i> Choose file
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.description_article, 'Description') }}
+    {{ form_widget(form.description_article, {'attr': {'class': 'form-control mb-3'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.prix, 'Price') }}
+    {{ form_widget(form.prix, {'attr': {'class': 'form-control mb-3'}}) }}
+</div>
+
+<button type="submit" class="btn btn-primary">
+    <i class="fas fa-save"></i> {{ button_label|default('Save') }}
+</button>
+
+{{ form_end(form) }}

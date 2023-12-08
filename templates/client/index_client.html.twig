@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+{% block header %}
+ <section class="home-slider-loop-false  inner-page owl-carousel">
+      <div class="slider-item" style="background-image:  url({{ asset('front/img/gymm.png') }}";>
+      
+        
+        <div class="container">
+          <div class="row slider-text align-items-center justify-content-center">
+            <div class="col-md-8 text-center col-sm-12 element-animate">
+              
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+{% endblock %} 
+
+{% block body %}
+
+    <section class="section element-animate">
+        <div class="clearfix mb-5 pb-5">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12 text-center heading-wrap">
+                <h2>Products</h2>
+                <span class="back-text">Our products</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="major-caousel js-carousel-1 owl-carousel">
+                {% for article in articles %}
+                <div>
+                  <div class="media d-block media-custom text-center">
+                  <img src="{{ asset('uploads/article_images/' ~ article.image) }}" alt="Image Placeholder" class="img-fluid" width="130" height="160">
+                    <div class="media-body">
+                      <h3 class="mt-0 text-black">{{ article.titreArticle }}</h3>
+                      <p class="lead">{{ article.prix }}</p>
+                      <a href="{{ path('app_command_form', {'id': article.id}) }}" class="btn btn-primary">Acheter</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+   
+      
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}New Abonnement
+{% endblock %}
+
+{% block body %}
+	<h1>Create new Abonnement</h1>
+
+	{{ include('crud_abonnement/_form.html.twig') }}
+
+	<a href="{{ path('app_crud_abonnement_index') }}">back to list</a>
+{% endblock %}
